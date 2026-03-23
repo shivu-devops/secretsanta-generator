@@ -9,11 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('git-checkout') {
-            steps {
-                git 'https://github.com/shivu-devops/secretsanta-generator.git'
-            }
-        }
 
         stage('Code-Compile') {
             steps {
