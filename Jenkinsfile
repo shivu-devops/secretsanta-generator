@@ -72,7 +72,6 @@ pipeline {
             steps {
                script{
                    withDockerRegistry(credentialsId: 'docker-cred') {
-					sh "docker rm 00d"
                     sh "docker run -d --name=santa-app -p 8081:8080 shivu27/santa:latest"
                  }
                }
