@@ -21,13 +21,6 @@ pipeline {
                sh "mvn test"
             }
         }
-        
-		//stage('OWASP Dependency Check') {
-        //   steps {
-        //      dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DC'
-        //           dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //   }
-        //}
 
 
         stage('Sonar Analysis') {
@@ -78,12 +71,6 @@ pipeline {
             }
         }
 	}
-        	 
-        //stage('Docker Image Scan') {
-        //    steps {
-        //       sh "trivy image adijaiswal/santa123:latest "
-        //    }
-        //}}
         
          post {
             always {
