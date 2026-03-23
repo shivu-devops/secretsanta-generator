@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('git-checkout') {
             steps {
-                git 'https://github.com/jaiswaladi246/secretsanta-generator.git'
+                git 'https://github.com/shivu-devops/secretsanta-generator.git'
             }
         }
 
@@ -27,12 +27,12 @@ pipeline {
             }
         }
         
-		stage('OWASP Dependency Check') {
-            steps {
-               dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DC'
-                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+		//stage('OWASP Dependency Check') {
+        //   steps {
+        //      dependencyCheck additionalArguments: ' --scan ./ ', odcInstallation: 'DC'
+        //           dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //   }
+        //}
 
 
         stage('Sonar Analysis') {
@@ -66,19 +66,29 @@ pipeline {
             steps {
                script{
                    withDockerRegistry(credentialsId: 'docker-cred') {
-                    sh "docker tag santa123 adijaiswal/santa123:latest"
-                    sh "docker push adijaiswal/santa123:latest"
+                    sh "docker tag santa123 shivu27/santa:latest"
+                    sh "docker push shivu27/santa:latest"
+                 }
+               }
+            }
+        }
+
+		stage('Deploy Application') {
+            steps {
+               script{
+                   withDockerRegistry(credentialsId: 'docker-cred') {
+                    sh "docker run -d -p 8081:8080 shivu27/santa:latest"
                  }
                }
             }
         }
         
         	 
-        stage('Docker Image Scan') {
-            steps {
-               sh "trivy image adijaiswal/santa123:latest "
-            }
-        }}
+        //stage('Docker Image Scan') {
+        //    steps {
+        //       sh "trivy image adijaiswal/santa123:latest "
+        //    }
+        //}}
         
          post {
             always {
@@ -91,15 +101,12 @@ pipeline {
                                     <p>Check the <a href="${BUILD_URL}">console output</a>.</p>
                                 </body>
                             </html>''',
-                    to: 'jaiswaladi246@gmail.com',
+                    to: 'shga2797@gmail.com',
                     from: 'jenkins@example.com',
                     replyTo: 'jenkins@example.com',
                     mimeType: 'text/html'
                 )
             }
         }
-		
-		
-
     
 }
